@@ -19,7 +19,7 @@ namespace Sean.Core.Topshelf.Extensions
                 services.Configure(configureOptions);
             }
 
-            HostingServiceManager.ServiceProvider = services.BuildServiceProvider();
+            HostedServiceManager.ServiceProvider = services.BuildServiceProvider();
             return services;
         }
     }

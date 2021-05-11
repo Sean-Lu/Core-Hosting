@@ -1,13 +1,20 @@
-﻿namespace Sean.Core.Topshelf.Contracts
+﻿using Topshelf.Runtime;
+
+namespace Sean.Core.Topshelf.Contracts
 {
     public interface IHostedService
     {
-        ServiceOptions Options { get; set; }
+        HostSettings Settings { get; set; }
 
         void Start();
-
         void Stop();
+    }
 
-        //void Shutdown();
+    public interface ICompleteHostedService : IHostedService
+    {
+        void Pause();
+        void Continue();
+
+        void Shutdown();
     }
 }

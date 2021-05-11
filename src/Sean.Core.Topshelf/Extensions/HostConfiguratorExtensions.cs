@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Topshelf;
 using Topshelf.HostConfigurators;
 
@@ -24,6 +25,43 @@ namespace Sean.Core.Topshelf.Extensions
             if (options.EnablePauseAndContinue)
             {
                 configurator.EnablePauseAndContinue();
+            }
+            if (options.EnableShutdown)
+            {
+                configurator.EnableShutdown();
+            }
+
+            // 服务依赖项
+            options.DependsOnServiceNames?.ForEach(name => configurator.DependsOn(name));
+
+            // 自动恢复设置（服务重启）
+            if (options.ServiceRecovery != null)
+            {
+                configurator.EnableServiceRecovery(options.ServiceRecovery);
+            }
+            else
+            {
+                configurator.EnableServiceRecovery(r =>
+                {
+                    var delay = 0;
+                    // 第一次失败 
+                    // 重启服务
+                    r.RestartService(delay);
+
+                    // 第二次失败
+                    // 运行指定外部程序
+                    //r.RunProgram(delay, "command");
+
+                    // 第三次失败
+                    // 重启计算机
+                    //r.RestartComputer(delay, string.Format("Service {0} crashed!", serviceName));
+
+                    // 仅服务崩溃时重启服务
+                    r.OnCrashOnly();
+
+                    // 恢复计算周期
+                    r.SetResetPeriod(1);
+                });
             }
         }
         public static void Configure(this HostConfigurator configurator, ServiceStartType type)

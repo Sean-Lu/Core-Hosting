@@ -6,6 +6,7 @@ using Sean.Core.Topshelf.Extensions;
 using Sean.Utility.Contracts;
 using Sean.Utility.Extensions;
 using Sean.Utility.Impls.Log;
+using Topshelf;
 
 namespace Demo.TestService
 {
@@ -24,13 +25,13 @@ namespace Demo.TestService
             var logger = ServiceManager.GetService<ISimpleLogger<MainService>>();
             var configuration = ServiceManager.GetService<IConfiguration>();
 
-            var serviceManager = new HostingServiceManager(options => { });
-            serviceManager.Run<MainService>((x, options) =>
+            var serviceManager = new HostedServiceManager(options => { });
+            serviceManager.RunService<MainService>((x, options) =>
             {
-                //x.BeforeInstall(settings => { logger.LogInfo("Install service => Start"); });
-                //x.AfterInstall(settings => { logger.LogInfo("Install service => End"); });
-                //x.BeforeUninstall(() => { logger.LogInfo("Uninstall service => Start"); });
-                //x.AfterUninstall(() => { logger.LogInfo("Uninstall service => End"); });
+                x.BeforeInstall(settings => { logger.LogInfo("Install service => Start"); });
+                x.AfterInstall(settings => { logger.LogInfo("Install service => End"); });
+                x.BeforeUninstall(() => { logger.LogInfo("Uninstall service => Start"); });
+                x.AfterUninstall(() => { logger.LogInfo("Uninstall service => End"); });
             });
         }
     }

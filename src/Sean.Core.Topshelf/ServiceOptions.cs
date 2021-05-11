@@ -1,4 +1,8 @@
-﻿namespace Sean.Core.Topshelf
+﻿using System;
+using System.Collections.Generic;
+using Topshelf;
+
+namespace Sean.Core.Topshelf
 {
     /// <summary>
     /// 服务配置
@@ -28,11 +32,6 @@
         public RunAsIdentity Identity { get; set; }
 
         /// <summary>
-        /// 是否允许服务暂停\继续（默认禁用）
-        /// </summary>
-        public bool EnablePauseAndContinue { get; set; }
-
-        /// <summary>
         /// 用户名（仅当 <see cref="Identity"/>=<see cref="RunAsIdentity.SpecialUser"/> 时生效）
         /// </summary>
         public string Username { get; set; }
@@ -40,5 +39,21 @@
         /// 密码（仅当 <see cref="Identity"/>=<see cref="RunAsIdentity.SpecialUser"/> 时生效）
         /// </summary>
         public string Password { get; set; }
+
+        /// <summary>
+        /// 是否允许服务暂停\继续（默认禁用）
+        /// </summary>
+        public bool EnablePauseAndContinue { get; set; }
+        public bool EnableShutdown { get; set; }
+
+        /// <summary>
+        /// 服务依赖
+        /// </summary>
+        public List<string> DependsOnServiceNames { get; set; }
+
+        /// <summary>
+        /// 自动恢复设置（服务重启）
+        /// </summary>
+        public Action<ServiceRecoveryConfigurator> ServiceRecovery { get; set; }
     }
 }

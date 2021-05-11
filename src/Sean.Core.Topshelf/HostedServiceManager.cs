@@ -6,6 +6,8 @@ using Sean.Core.Topshelf.Extensions;
 using Topshelf;
 using Topshelf.HostConfigurators;
 using Topshelf.Runtime;
+using Topshelf.ServiceConfigurators;
+
 #if NETSTANDARD
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +19,7 @@ namespace Sean.Core.Topshelf
     /// <summary>
     /// Configure and run a service host using the HostFactory
     /// </summary>
-    public class HostingServiceManager
+    public class HostedServiceManager
     {
         public ServiceOptions Options => _options;
 
@@ -28,7 +30,7 @@ namespace Sean.Core.Topshelf
         //private readonly IConfiguration _configuration;
 #endif
 
-        public HostingServiceManager(Action<ServiceOptions> options = null)
+        public HostedServiceManager(Action<ServiceOptions> options = null)
         {
 #if NETSTANDARD
             _options = ServiceProvider?.GetService<IOptionsMonitor<ServiceOptions>>()?.CurrentValue ?? new ServiceOptions();
@@ -76,32 +78,6 @@ namespace Sean.Core.Topshelf
             {
                 x.Configure(_options);
 
-                // 服务依赖项
-                //x.DependsOn(servicenames);
-
-                // 自动恢复设置（服务重启）
-                x.EnableServiceRecovery(r =>
-                {
-                    var delay = 0;
-                    // 第一次失败 
-                    // 重启服务
-                    r.RestartService(delay);
-
-                    // 第二次失败
-                    // 运行指定外部程序
-                    //r.RunProgram(delay, "command");
-
-                    // 第三次失败
-                    // 重启计算机
-                    //r.RestartComputer(delay, string.Format("Service {0} crashed!", serviceName));
-
-                    // 仅服务崩溃时重启服务
-                    r.OnCrashOnly();
-
-                    // 恢复计算周期
-                    r.SetResetPeriod(1);
-                });
-
                 configureCallback?.Invoke(x, _options);
             });
         }
@@ -112,20 +88,47 @@ namespace Sean.Core.Topshelf
         /// <typeparam name="T"></typeparam>
         /// <param name="configureCallback"></param>
         /// <param name="serviceFactory"></param>
+        /// <param name="serviceConfigurator"></param>
         /// <returns></returns>
-        public TopshelfExitCode Run<T>(Action<HostConfigurator, ServiceOptions> configureCallback = null, ServiceFactory<T> serviceFactory = null) where T : class, IHostedService, new()
+        public TopshelfExitCode RunService<T>(Action<HostConfigurator, ServiceOptions> configureCallback = null, ServiceFactory<T> serviceFactory = null, Action<ServiceConfigurator<T>> serviceConfigurator = null) where T : class, IHostedService, new()
         {
             return Run((x, options) =>
             {
-                x.Service<T>(s =>
+                x.Service<T>(sc =>
                 {
-                    s.ConstructUsing(serviceFactory ?? (service => new T { Options = _options }));
-                    s.WhenStarted(service => service.Start());
-                    s.WhenStopped(service => service.Stop());
-                    //s.WhenShutdown(service => service.Shutdown());
+                    sc.ConstructUsing(serviceFactory ?? (settings => new T { Settings = settings }));
+
+                    // the start and stop methods for the service
+                    sc.WhenStarted(s => s.Start());
+                    sc.WhenStopped(s => s.Stop());
+
+                    serviceConfigurator?.Invoke(sc);
                 });
 
                 configureCallback?.Invoke(x, options);
+            });
+        }
+
+        /// <summary>
+        /// Configures and runs a new service host.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="configureCallback"></param>
+        /// <param name="serviceFactory"></param>
+        /// <param name="serviceConfigurator"></param>
+        /// <returns></returns>
+        public TopshelfExitCode RunCompleteService<T>(Action<HostConfigurator, ServiceOptions> configureCallback = null, ServiceFactory<T> serviceFactory = null, Action<ServiceConfigurator<T>> serviceConfigurator = null) where T : class, ICompleteHostedService, new()
+        {
+            return RunService(configureCallback, serviceFactory, sc =>
+            {
+                // optional pause/continue methods if used
+                sc.WhenPaused(s => s.Pause());
+                sc.WhenContinued(s => s.Continue());
+
+                // optional, when shutdown is supported
+                sc.WhenShutdown(s => s.Shutdown());
+
+                serviceConfigurator?.Invoke(sc);
             });
         }
     }

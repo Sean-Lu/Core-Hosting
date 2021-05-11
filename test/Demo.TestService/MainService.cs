@@ -3,12 +3,13 @@ using Sean.Core.Topshelf;
 using Sean.Core.Topshelf.Contracts;
 using Sean.Utility.Common;
 using Sean.Utility.Contracts;
+using Topshelf.Runtime;
 
 namespace Demo.TestService
 {
     public class MainService : IHostedService
     {
-        public ServiceOptions Options { get; set; }
+        public HostSettings Settings { get; set; }
 
         private readonly ILogger _logger;
 
@@ -24,13 +25,13 @@ namespace Demo.TestService
         public void Start()
         {
             // Todo something...
-            _logger.LogInfo($"{Options.ServiceName}服务启动");
+            _logger.LogInfo($"{Settings.ServiceName}服务启动");
         }
 
         public void Stop()
         {
             // Todo something...
-            _logger.LogInfo($"{Options.ServiceName}服务停止");
+            _logger.LogInfo($"{Settings.ServiceName}服务停止");
         }
     }
 }
