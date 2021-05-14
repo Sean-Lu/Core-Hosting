@@ -1,11 +1,10 @@
 ﻿using Sean.Core.Ioc;
-using Sean.Core.Topshelf;
 using Sean.Core.Topshelf.Contracts;
 using Sean.Utility.Common;
 using Sean.Utility.Contracts;
 using Topshelf.Runtime;
 
-namespace Demo.TestService
+namespace Example.Topshelf.TestService
 {
     public class MainService : IHostedService
     {

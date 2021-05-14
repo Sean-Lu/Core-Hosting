@@ -1,8 +1,18 @@
 ## 简介
 
-> 基于[`Topshelf`](https://github.com/Topshelf/Topshelf)封装
+> `Sean.Core.Hosting`：`Microsoft.Extensions.Hosting`
+>
+> `Sean.Core.Topshelf`：[`Topshelf`](https://github.com/Topshelf/Topshelf)
 
 ## Nuget包引用
+
+> **Id：Sean.Core.Hosting**
+
+- Package Manager
+
+```
+PM> Install-Package Sean.Core.Hosting
+```
 
 > **Id：Sean.Core.Topshelf**
 
@@ -14,4 +24,6 @@ PM> Install-Package Sean.Core.Topshelf
 
 ## 使用示例
 
-> 项目：test\Demo.NetCore
+> 项目：examples\Example.Hosting.TestService
+>
+> 项目：examples\Example.Topshelf.TestService
