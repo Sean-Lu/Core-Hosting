@@ -21,7 +21,7 @@ namespace Sean.Core.Topshelf
     /// </summary>
     public class HostedServiceManager
     {
-        public ServiceOptions Options => _options;
+        public IServiceOptions Options => _options;
 
         private readonly ServiceOptions _options;
 

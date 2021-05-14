@@ -1,60 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sean.Core.Topshelf.Contracts;
 using Topshelf;
 
-namespace Sean.Core.Topshelf
+namespace Sean.Core.Topshelf.Contracts
 {
-    /// <summary>
-    /// 服务配置
-    /// </summary>
-    public class ServiceOptions : IServiceOptions
+    public interface IServiceOptions
     {
         /// <summary>
         /// 服务名称
         /// </summary>
-        public string ServiceName { get; set; }
+        string ServiceName { get; }
+
         /// <summary>
         /// 服务显示名称
         /// </summary>
-        public string ServiceDisplayName { get; set; }
+        string ServiceDisplayName { get; }
+
         /// <summary>
         /// 服务描述
         /// </summary>
-        public string ServiceDescription { get; set; }
+        string ServiceDescription { get; }
 
         /// <summary>
         /// 服务启动方式
         /// </summary>
-        public ServiceStartType StartType { get; set; }
+        ServiceStartType StartType { get; }
+
         /// <summary>
         /// 服务运行身份
         /// </summary>
-        public RunAsIdentity Identity { get; set; }
+        RunAsIdentity Identity { get; }
 
         /// <summary>
         /// 用户名（仅当 <see cref="Identity"/>=<see cref="RunAsIdentity.SpecialUser"/> 时生效）
         /// </summary>
-        public string Username { get; set; }
+        string Username { get; }
+
         /// <summary>
         /// 密码（仅当 <see cref="Identity"/>=<see cref="RunAsIdentity.SpecialUser"/> 时生效）
         /// </summary>
-        public string Password { get; set; }
+        string Password { get; }
 
         /// <summary>
         /// 是否允许服务暂停\继续（默认禁用）
         /// </summary>
-        public bool EnablePauseAndContinue { get; set; }
-        public bool EnableShutdown { get; set; }
+        bool EnablePauseAndContinue { get; }
+
+        bool EnableShutdown { get; }
 
         /// <summary>
         /// 服务依赖
         /// </summary>
-        public List<string> DependsOnServiceNames { get; set; }
+        List<string> DependsOnServiceNames { get; }
 
         /// <summary>
         /// 自动恢复设置（服务重启）
         /// </summary>
-        public Action<ServiceRecoveryConfigurator> ServiceRecovery { get; set; }
+        Action<ServiceRecoveryConfigurator> ServiceRecovery { get; }
     }
 }
