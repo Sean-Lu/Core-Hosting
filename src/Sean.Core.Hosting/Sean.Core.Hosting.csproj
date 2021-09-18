@@ -1,16 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Sean</Authors>
-    <Description>Hosted service.</Description>
-    <Version>1.0.1</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Authors>Sean</Authors>
+		<Description>Hosted service.</Description>
+		<Version>1.0.1</Version>
+		<PackageProjectUrl>https://github.com/Sean-Lu/Core-Hosting</PackageProjectUrl>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+	</ItemGroup>
 
 </Project>

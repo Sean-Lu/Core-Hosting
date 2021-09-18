@@ -1,27 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Authors>Sean</Authors>
-    <Description>Topshelf</Description>
-    <Version>1.0.4</Version>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net452;netstandard2.0</TargetFrameworks>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<Authors>Sean</Authors>
+		<Description>Topshelf</Description>
+		<Version>1.0.4</Version>
+		<PackageProjectUrl>https://github.com/Sean-Lu/Core-Hosting</PackageProjectUrl>
+	</PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
-    <Reference Include="System.Configuration" />
-  </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' != 'netstandard2.0'">
+		<Reference Include="System.Configuration" />
+	</ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <!--<PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />-->
-    <!--<PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />-->
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0" />
-  </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+		<!--<PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />-->
+		<!--<PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />-->
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="5.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Topshelf" Version="4.3.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Topshelf" Version="4.3.0" />
+	</ItemGroup>
 
 </Project>
